@@ -19,6 +19,7 @@ Fully on-device couples' favourite-moments recorder. See `docs/`.
 - Every log heading has a UTC timestamp: `## YYYY-MM-DD HH:MM UTC · B-xxx title status` (`TZ=UTC date '+%Y-%m-%d %H:%M UTC'`).
 - ⏸ items wait for Noah. Skip them, don't fake them.
 - Never commit real recordings or space folders. Synthetic test data only.
+- Noah tests on a MacBook (Apple M5, 24 GB) with Obsidian. Each Mac-epic item must end with steps he can run there.
 
 ## Build
 - `./gradlew build` (JDK 21). Modules: `core` (shared logic), `cli` (laptop tool `d2g`).

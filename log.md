@@ -2,6 +2,15 @@
 
 Pilot log. Newest on top. Caveman talk. Times in UTC.
 
+## 2026-10-25 01:21 UTC · new epic: Mac + Obsidian 🧭
+- You grill done: Mac runs full pipeline (`d2g`), Obsidian shows. Mac = M5, 24 GB.
+- Input: voice memo file, record on Mac, typed chat. All three.
+- Show first: nights + moments, moments dashboard, month recap page.
+- Me make 5 items: B-020 vault + dashboard, B-021 typed chat → moments, B-022 voice memo,
+  B-023 record on Mac, B-024 month recap page. Old B-005–B-008, B-011 folded in.
+- Each item ends with something you try on Mac.
+- Next: B-020.
+
 ## 2026-10-25 01:16 UTC · B-004 note files ✅ · B-002 CI ✅
 - CI green on GitHub. Privacy guard works.
 - Me teach brain to write + read all notes: space, night, moment, collection.

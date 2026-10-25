@@ -11,6 +11,20 @@ Specs live in [docs/](docs/). Each item is done when its checks pass and its tes
 - The app gets no network permission. Everything runs offline.
 - Real-voice testing happens on your devices, never in CI.
 
+## V1: M0b Mac + Obsidian (epic, now)
+
+Goal: run the whole thing on your MacBook (M5, 24 GB) and see it in Obsidian. Everything runs
+offline on the Mac (whisper.cpp and llama.cpp with Metal). The old items B-005–B-008 and B-011
+are folded in here.
+
+| ID | Item | You can try | Status |
+|---|---|---|---|
+| B-020 | **Vault + dashboard.** `d2g init-space` creates a vault: `space.md`, folders, a CSS snippet, a moments dashboard (Bases: cards by month, category, ⭐), and a "Start here" note. `d2g demo` fills it with synthetic October nights. Mac setup guide (Homebrew, one build command). | Open the vault in Obsidian and browse the dashboard | ⬜ |
+| B-021 | **Typed chat → moments.** `d2g process-transcript chat.txt --by <you> --at <date time>`. Local LLM via `llama-server`, output forced to a JSON schema. Date resolver ("on Saturday" → date), extraction prompt v1, `generated_hash`. Fake-LLM tests in CI. | Write a pretend bedtime chat and see moment notes appear | ⬜ |
+| B-022 | **Voice memo → moments.** `d2g process memo.m4a`: ffmpeg → whisper.cpp → transcript, then B-021. Audio copied into the vault, so the night note plays it and each moment shows its ▶️ time range. | Drop in a phone or Mac voice memo | ⬜ |
+| B-023 | **Record on the Mac.** `d2g record`: records from the Mac mic, stops on Enter, after ~3 min of silence, or at 30 min, then processes. The auto-stop logic lives in `core`, so Android reuses it. | Talk at night next to the MacBook | ⬜ |
+| B-024 | **Month recap page.** `d2g recap 2026-10` writes `months/2026-10.md`: stats computed in code, a title and journal from the LLM, highlights, and the month's moments embedded. Your journal edits are kept on re-run. | Open "October Wrapped" in Obsidian | ⬜ |
+
 ## V1: M0 Foundation & laptop test
 
 | ID | Item | Done when | Status |
@@ -19,14 +33,9 @@ Specs live in [docs/](docs/). Each item is done when its checks pass and its tes
 | B-002 | CI: GitHub Actions builds and tests on every push; a guard fails if audio files appear outside `eval/synthetic/` | Workflow green on the branch | ✅ |
 | B-003 | Core model: Space, Night, Moment, Collection, the categories enum, id generation (`s-…`, `m-…-xxxx`) | Unit tests | ✅ |
 | B-004 | Note files: write and read space, night, moment and collection notes per [formats](docs/session-file-format.md). The parser tolerates Obsidian edits and keeps unknown content. | Round-trip tests, including hand-edited fixtures | ✅ |
-| B-005 | Date-reference resolver (`today`, `yesterday`, `weekday:x`, `date:…`, `unknown` → date + confidence) | Unit tests incl. week and month edges | ⬜ |
-| B-006 | Extraction contract: JSON schema, prompt v1, output validation → moment notes, `generated_hash`, chunk merge | Tests with canned model outputs | ⬜ |
-| B-007 | Engine interfaces `SpeechToText` and `LanguageModel`, with fakes | Used by tests | ⬜ |
-| B-008 | CLI `d2g`: `init-space`, `process <audio>`, `process-transcript <txt>`. Calls local whisper.cpp and llama.cpp binaries. | End-to-end test with fakes; how-to in `cli/README.md` | ⬜ |
 | B-009 | Synthetic eval set: 5 scripted English bedtime chats with expected moments (`eval/`) | Files plus a format check | ⬜ |
 | B-010 | `d2g eval`: score extracted moments against expected ones (title, date, categories) | Report printed; test on canned outputs | ⬜ |
-| B-011 | Obsidian starter kit: CSS snippet and a Bases view, created by `init-space` | Generated in tests | ⬜ |
-| B-012 | Model bake-off: run `d2g eval` with 2–3 small LLMs plus whisper on your laptop; pick the defaults | Results in `eval/RESULTS.md` | ⏸ |
+| B-012 | Model bake-off on your Mac: phone-size (~2–4B) vs Mac-size (~12B) LLMs, whisper `small.en` vs `large-v3-turbo`; pick defaults | Results in `eval/RESULTS.md` | ⏸ |
 | B-013 | First look: open a generated space in Obsidian and say if it feels right | Your OK | ⏸ |
 
 ## V1: M1 Android recorder & archive

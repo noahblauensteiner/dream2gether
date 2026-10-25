@@ -8,6 +8,7 @@ data class Space(
     val timezone: String,
     val glossaryPeople: List<String> = emptyList(),
     val glossaryPlaces: List<String> = emptyList(),
+    val extras: NoteExtras = NoteExtras.NONE,
 ) {
     init {
         require(members.isNotEmpty()) { "A space needs at least one member" }

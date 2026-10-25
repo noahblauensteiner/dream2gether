@@ -16,9 +16,9 @@ Specs live in [docs/](docs/). Each item is done when its checks pass and its tes
 | ID | Item | Done when | Status |
 |---|---|---|---|
 | B-001 | Repo skeleton: Gradle multi-project (`core`, `cli`), Kotlin/JVM, version catalog, `.gitignore` that blocks audio and space folders | `./gradlew build` green | ✅ |
-| B-002 | CI: GitHub Actions builds and tests on every push; a guard fails if audio files appear outside `eval/synthetic/` | Workflow green on the branch | 🔨 |
+| B-002 | CI: GitHub Actions builds and tests on every push; a guard fails if audio files appear outside `eval/synthetic/` | Workflow green on the branch | ✅ |
 | B-003 | Core model: Space, Night, Moment, Collection, the categories enum, id generation (`s-…`, `m-…-xxxx`) | Unit tests | ✅ |
-| B-004 | Note files: write and read space, night, moment and collection notes per [formats](docs/session-file-format.md). The parser tolerates Obsidian edits and keeps unknown content. | Round-trip tests, including hand-edited fixtures | ⬜ |
+| B-004 | Note files: write and read space, night, moment and collection notes per [formats](docs/session-file-format.md). The parser tolerates Obsidian edits and keeps unknown content. | Round-trip tests, including hand-edited fixtures | ✅ |
 | B-005 | Date-reference resolver (`today`, `yesterday`, `weekday:x`, `date:…`, `unknown` → date + confidence) | Unit tests incl. week and month edges | ⬜ |
 | B-006 | Extraction contract: JSON schema, prompt v1, output validation → moment notes, `generated_hash`, chunk merge | Tests with canned model outputs | ⬜ |
 | B-007 | Engine interfaces `SpeechToText` and `LanguageModel`, with fakes | Used by tests | ⬜ |

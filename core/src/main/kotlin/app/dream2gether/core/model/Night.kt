@@ -19,6 +19,7 @@ data class Night(
     val moments: List<MomentLink> = emptyList(),
     val dreams: List<DreamMention> = emptyList(),
     val transcript: List<Segment> = emptyList(),
+    val extras: NoteExtras = NoteExtras.NONE,
 )
 
 enum class NightStatus(val key: String) {
@@ -37,7 +38,7 @@ data class Processing(
     val sttModel: String,
     val llmModel: String?,
     val promptVersion: String?,
-    val processedAt: LocalDateTime?,
+    val processedAt: String?,
 )
 
 /** A transcript line. [language] is set only when it differs from the night's language. */

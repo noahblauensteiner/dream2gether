@@ -54,12 +54,23 @@ dream2gether-space/
 type: space
 schema: dream2gether/space@1
 name: Alex & Sam
-members: [alex, sam]
-member_names: [Alex, Sam]
+members:
+  - alex
+  - sam
+member_names:
+  - Alex
+  - Sam
 language: en
 timezone: Europe/Vienna
-glossary_people: [Mila, Jonas, Grandma Rosi, Pepper]
-glossary_places: [farmers' market, boulder gym, old cinema]
+glossary_people:
+  - Mila
+  - Jonas
+  - Grandma Rosi
+  - Pepper
+glossary_places:
+  - farmers' market
+  - boulder gym
+  - old cinema
 ---
 
 # Alex & Sam 🌙
@@ -128,8 +139,11 @@ date: 2026-10-07
 date_end:
 date_confidence: exact
 who: both
-categories: [food, cozy]
-places: [home]
+categories:
+  - food
+  - cozy
+places:
+  - home
 people: []
 first_time: true
 star: true
@@ -139,7 +153,8 @@ audio_from: "01:02"
 audio_to: "02:14"
 photo_hint:
 generated_hash: 9f2c41d0
-tags: [moment]
+tags:
+  - moment
 ---
 
 # 🍜 Ramen from scratch
@@ -183,7 +198,7 @@ reorder in the app, or move the lines in Obsidian.
 type: collection
 schema: dream2gether/collection@1
 kind: album          # album | project | artwork | photo-book | other
-title: Best food of 2026
+title: 🍝 Best food of 2026
 cover: "[[m-2026-10-07-ramen-n9qe-1.jpg]]"
 ---
 

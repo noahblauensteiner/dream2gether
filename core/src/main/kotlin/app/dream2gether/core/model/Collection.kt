@@ -8,6 +8,7 @@ data class Collection(
     val cover: String? = null,
     val intro: String = "",
     val moments: List<MomentId> = emptyList(),
+    val extras: NoteExtras = NoteExtras.NONE,
 )
 
 enum class CollectionKind(val key: String) {

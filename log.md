@@ -2,6 +2,15 @@
 
 Pilot log. Newest on top. Caveman talk. Times in UTC.
 
+## 2026-10-25 01:16 UTC · B-004 note files ✅ · B-002 CI ✅
+- CI green on GitHub. Privacy guard works.
+- Me teach brain to write + read all notes: space, night, moment, collection.
+- Obsidian-proof: weird list styles, extra properties, extra sections, CRLF, hand comments, `==highlights==`.
+  Read → write again → nothing lost.
+- 24 tests green.
+- Docs examples now match what code writes (block lists).
+- Next: B-005 date resolver ("on Saturday" → real date).
+
 ## 2026-10-25 01:10 UTC · B-003 core model ✅
 - Brain shapes made: Space, Member, Night, Segment, Moment, Comment, Collection, 11 categories.
 - Ids: `s-2026-10-07-2250-sam` for nights, `m-2026-10-07-ramen-from-scratch-k3f9` for moments.

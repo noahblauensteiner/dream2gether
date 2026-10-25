@@ -26,6 +26,7 @@ data class Moment(
     val quote: String? = null,
     val photos: List<String> = emptyList(),
     val comments: List<Comment> = emptyList(),
+    val extras: NoteExtras = NoteExtras.NONE,
 ) {
     companion object {
         const val WHO_BOTH = "both"

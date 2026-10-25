@@ -1,0 +1,25 @@
+# Build
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+.kotlin/
+
+# Privacy guard: never commit real recordings, spaces or models.
+# Synthetic test audio is the only exception.
+*.m4a
+*.wav
+*.mp3
+*.ogg
+*.opus
+*.flac
+*.aac
+!eval/synthetic/**
+dream2gether-space/
+/spaces/
+*.gguf
+*.litertlm
+*.task
+/models/

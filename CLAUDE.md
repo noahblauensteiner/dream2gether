@@ -12,3 +12,13 @@ Fully on-device couples' favourite-moments recorder. See `docs/`.
 - Laptop view = Obsidian. No Electron.
 - Files = source of truth. Phone DB = rebuildable index.
 - Keep audio. Nothing leaves devices except user export/backup.
+
+## Pilot workflow
+- `backlog.md` = work queue. Take top ⬜ item not blocked. Mark 🔨 while working, ✅ when done.
+- After each item: tests green, append caveman entry on top of `log.md`, commit, push.
+- ⏸ items wait for Noah. Skip them, don't fake them.
+- Never commit real recordings or space folders. Synthetic test data only.
+
+## Build
+- `./gradlew build` (JDK 21). Modules: `core` (shared logic), `cli` (laptop tool `d2g`).
+- Cloud box only: Maven Central rate-limits; `~/.gradle/init.d/mirror.gradle.kts` points at Google's mirror. Not in repo.

@@ -1,50 +1,65 @@
 # Architecture
 
-## Guiding idea: everything happens on the device
+## Guiding idea: process on the phone, share plain files
 
-There are no servers and no cloud services. The device that records also transcribes, extracts
-the moments, writes the recap and keeps the archive:
-
-- **V1:** the Android phone does everything. The app has no network permission at all.
-- **V2:** the bedside box (a Raspberry Pi) does everything. The phone becomes a window onto it
-  over the home Wi-Fi and never reaches the internet.
-
-Both run the same **shared Kotlin core** (data model, prompts, stats, export) and the same kind
-of on-device engines: whisper.cpp for speech-to-text and a small local language model (LLM).
-
-```mermaid
-flowchart LR
-  subgraph phone["📱 Android phone (V1): no network permission"]
-    rec["🎙️ Recorder<br/>(foreground service)"]
-    audio[("🔊 Audio archive<br/>.m4a, kept")]
-    stt["whisper.cpp<br/>speech-to-text"]
-    llm["Local LLM<br/>moment extraction · recap"]
-    db[("Room DB<br/>sessions · moments · photos")]
-    ui["App UI<br/>inbox · ▶️ playback · recap"]
-    rec --> audio --> stt --> llm --> db
-    stt --> db
-    db <--> ui
-    audio --> ui
-  end
-  ui -- "you tap Export / Backup" --> out["📦 Handover bundle<br/>🔐 encrypted backup<br/>(USB stick, computer)"]
-```
+- A couple (or family) shares one **space**. **Any** member's Android phone can record.
+- The phone that records does all the processing itself: transcription (whisper.cpp) and moment
+  extraction (a small local language model). There are no servers and no cloud AI.
+- The result is one Markdown **session file** per night: the moments plus the full transcript.
+  See the [session file format](session-file-format.md).
+- **Files are the source of truth.** The space is a folder synced between your devices. Each
+  phone's database is only an index rebuilt from it.
+- **V2:** the Raspberry Pi bedside box is just another device in the space. It records,
+  processes and writes session files the same way.
 
 ```mermaid
 flowchart LR
-  subgraph box["🔘 Bedside box (V2): outbound internet blocked"]
-    btn["Button + LED"] --> brec["Recorder"] --> bstt["whisper.cpp"] --> bllm["Local LLM"] --> bdb[("SQLite + audio + photos<br/>on SSD")]
-    bdb <--> api["LAN-only API"]
+  subgraph pa["📱 Alex's phone"]
+    ra["🎙️ record → whisper.cpp → local LLM"] --> fa[("space folder<br/>sessions · audio · photos · months")]
   end
-  phone2["📱 Phone app (box mode)<br/>browse · edit · photos"] <-- "home Wi-Fi, paired, encrypted" --> api
+  subgraph pb["📱 Sam's phone"]
+    rb["🎙️ record → whisper.cpp → local LLM"] --> fb[("space folder")]
+  end
+  box["🔘 Pi bedside box (V2)"]
+  fa <-- "sync" --> fb
+  fa <-- "sync" --> box
+  fa -- "you tap Export / Backup" --> out["📦 Handover bundle · 🔐 backup"]
 ```
 
-## Processing steps (on the device)
+All devices run the same **shared Kotlin core** (data model, prompts, stats, file formats,
+export) and the same kind of engines: whisper.cpp for speech-to-text and a small local LLM.
+
+## Sharing between phones
+
+The app only reads and writes files in the space folder. Moving them between devices is the job
+of a pluggable sync layer:
+
+| | **Syncthing** (recommended) | **Private Git repo** (e.g. GitHub) |
+|---|---|---|
+| Where the data lives | Only on your devices | Your devices **plus GitHub's servers** |
+| Audio | Syncs too, so ▶️ works on both phones | Stays on the recording phone (~2 GB a year is too big for git) |
+| Network permission for our app | **None.** The Syncthing app does the syncing, end-to-end encrypted. | Needed, plus a GitHub token on each phone |
+| When it syncs | When devices are online at the same time. At home on Wi-Fi every evening that's enough. | Any time, any network |
+| Extras | Every device holds a full copy, which doubles as a backup | Full edit history, readable on github.com |
+| Setup | Install [Syncthing-Fork](https://f-droid.org/packages/com.github.catfriend1.syncthingfork/) on both phones and share one folder | Create a private repo and a fine-grained token per phone |
+
+**Recommendation: Syncthing.** It keeps the "nothing leaves our devices" promise, lets the audio
+come along, and our app stays permission-free.
+
+Git is a possible second adapter. It's useful if you want edit history or to read transcripts on
+the web. Transcripts would then sit on GitHub's servers. Encrypting files before pushing
+(git-crypt or similar) fixes that, but you lose web viewing.
+
+**Setting it up.** The app asks for the space folder once, through the system folder picker,
+and remembers it. In Syncthing, that folder is shared with your partner's phone.
+
+## Processing steps (on the recording phone)
 
 Each recording is a **session** moving through
 `recorded → transcribed → extracted → (reviewed)`.
 Audio and transcripts are kept, so every step can be re-run. When a better model comes out, or
-German arrives, old nights can be re-processed and only gain from it. Fields you edited by hand
-are never overwritten.
+German arrives, old nights can be re-processed and only gain from it. Moments edited by hand are
+never overwritten.
 
 1. **Capture**
    - `MediaRecorder` records AAC in `.m4a`, mono, ~64 kbps. That plays anywhere and is about
@@ -62,7 +77,7 @@ are never overwritten.
 4. **Transcribe**
    - whisper.cpp through JNI with an English model (`small.en`, or `base.en` on lighter phones),
      voice-activity detection on.
-   - The output is stored as segments with `start_ms`, `end_ms`, `text` and `language`.
+   - The output is segments with timestamps and language.
 5. **Extract moments**
    - The local LLM uses constrained decoding: output is forced to match a JSON schema, so it
      always parses.
@@ -70,17 +85,17 @@ are never overwritten.
      - numbered transcript segments;
      - recording date and weekday;
      - tonight's question;
-     - your names;
-     - a small glossary of known people and places;
-     - titles of recent moments, so repeats get linked instead of duplicated.
+     - the members' names;
+     - the glossary from `space.yaml`;
+     - titles of recent moments from the whole space, so repeats get linked instead of
+       duplicated.
    - Each moment cites the segments it came from. That's what powers ▶️ "hear it".
-6. **Review (optional)**: moments are visible right away; edits are tracked per field.
+6. **Write the session file and audio** into the space folder. Sync carries them to the other
+   devices.
 7. **Monthly recap**
-   - Stats are computed in code: counts, streaks, categories, cast, places.
-   - The LLM writes only the title, the journal and the playful lines. It works from the
-     reviewed moments; private moments are never included.
-   - It runs as a few small, separate calls rather than one big one, which suits a small model
-     better.
+   - Whichever phone notices changes regenerates `months/fav-moments-YYYY-MM.md`.
+   - Stats are computed in code. The LLM writes only the title, the journal and the playful
+     lines, from non-private moments.
 8. **Export / backup**: see [handover format](journal-handover-format.md) and
    [backup](#backup--restore).
 
@@ -98,10 +113,12 @@ A 2–4B-parameter on-device model is capable but needs a gentle setup:
 - **Short prompts.** Use one worked example and one task per call.
 - **Chunk long nights.** Split transcripts longer than ~10 min into ~5-min windows. Code then
   merges moments that overlap in segments or titles.
-- **Record what produced each result.** Store the prompt version and model per result, to know
-  what to re-run.
+- **Record what produced each result.** Each session file records the model and prompt version,
+  to know what to re-run.
 
 ### Extraction output (draft)
+
+The model returns JSON. The core turns it into the session file's Markdown.
 
 ```json
 {
@@ -129,107 +146,99 @@ A 2–4B-parameter on-device model is capable but needs a gentle setup:
 }
 ```
 
-The core turns `day_ref` into `happened_on` plus a `date_confidence` of `exact | approx |
-unknown`. It turns `segments` into `audio_start_ms` and `audio_end_ms`.
+## Any Android phone
+
+- **No minimum phone.** Each phone picks model sizes by its RAM: `small.en` plus a ~4B LLM on
+  roomier phones, `base.en` plus a ~2B LLM on lighter ones. A slower phone just takes longer
+  overnight.
+- **Mixed models are fine.** The session file notes which models processed it.
+- **Catching up later.** If a light phone recorded a night, any device can re-process it later,
+  for example with a bigger model on the V2 box.
 
 ## Models & runtimes
 
-| Job | V1: Android | V2: Raspberry Pi |
+| Job | Android | Raspberry Pi (V2) |
 |---|---|---|
-| Speech-to-text | whisper.cpp via JNI, `small.en` (`base.en` on lighter phones) | whisper.cpp, same model or larger, since there's all night to process |
-| LLM | [LiteRT-LM](https://developers.googleblog.com/blazing-fast-on-device-genai-with-litert-lm/) with a small Gemma model (e.g. Gemma 4 E2B; E4B if the phone has room). It supports constrained decoding and is light on memory. llama.cpp is the fallback. | llama.cpp with a GGUF model. A Pi 5 with 16 GB can run a bigger model overnight. |
+| Speech-to-text | whisper.cpp via JNI, `small.en` / `base.en` | whisper.cpp, same model or larger |
+| LLM | [LiteRT-LM](https://developers.googleblog.com/blazing-fast-on-device-genai-with-litert-lm/) with a small Gemma model (e.g. Gemma 4 E2B / E4B). It supports constrained decoding and is light on memory. llama.cpp is the fallback. | llama.cpp with a GGUF model. A Pi 5 with 16 GB can run a bigger model overnight. |
 
 - **Swappable.** Both engines sit behind interfaces in the core (`SpeechToText`,
-  `LanguageModel`), so the laptop test decides the actual pick and models can be swapped
-  later.
-- **Installed once, never downloaded by the app.** Models take a few GB. They're copied onto the
-  phone once (`adb push`, or downloaded in a browser and imported via the file picker). The app
-  itself never downloads anything.
+  `LanguageModel`), so the laptop test decides the actual pick.
+- **Installed once, never downloaded by the app.** Models are copied onto each phone once
+  (`adb push`, or downloaded in a browser and imported via the file picker).
 
 ## Shared core (`core/`)
 
 Pure Kotlin, using `kotlinx.serialization` and `kotlinx-datetime`, with no Android APIs:
 
-- the data model and its JSON;
+- the space and session file formats (read and write);
 - prompts, schemas, and date-reference resolution;
-- the moment merge logic;
-- recap stats and recap assembly;
-- Markdown export and the backup format;
+- the moment merge logic and conflict detection;
+- recap stats and the monthly handover file;
+- the backup format;
 - the step-by-step processing logic, written against engine and storage interfaces.
 
-It runs on Android, on the Pi's JVM, and via Kotlin Multiplatform on iOS later. whisper.cpp and
-LiteRT-LM also run on iOS.
+It runs on Android, on the Pi's JVM, and via Kotlin Multiplatform on iOS later.
 
-## Data model (draft)
+## Index database (per phone)
+
+A Room database **rebuilt from the files**, for fast lists, search and the recap screen. It's
+never synced and never backed up: delete it and it rebuilds.
 
 ```
-Couple    names (a, b), language, timezone, bedtime_reminder, glossary (people/places)
-
-Session   id, recorded_at, duration_s, question_id, audio_path, language,
-          segments [{idx, start_ms, end_ms, text, language}],
-          stt_model, llm_model, prompt_version, status, error?
-
-Moment    id, session_id, title, description, happened_on, happened_on_end?,
-          date_confidence, who (both|a|b), categories[], tags[], places[], people[],
-          emoji, quote?, quote_by?, is_first_time, photo_hint?,
-          audio_start_ms, audio_end_ms,
-          starred, private, hidden, merged_into?, edited_fields[], created_at, updated_at
-
-Photo     id, moment_id, file_path, taken_at?, caption?, sort
-
-Dream     id, text, created_from_session?, status (open|done), fulfilled_by_moment?
-
-Recap     month (YYYY-MM), title, journal_md, stats (json), edited_by_human, generated_at
-
-Question  id, text, kind (nightly|random|weekly|monthly|special), last_asked_at
+Session   id, file_path, recorded_by, recorded_at, duration_s, language, audio_path?, status
+Moment    id, session_id, title, happened_on, happened_on_end?, date_confidence, who,
+          categories[], places[], people[], emoji, starred, private, edited,
+          audio_start_ms, audio_end_ms
+Photo     moment_id, file_path
+Dream     id, text, status, fulfilled_by_moment?
+FileSeen  path, modified_at, hash        (to notice synced changes)
 ```
-
-`language` is stored on each session and each segment from day one, ready for German, Dutch and
-mixed nights.
 
 ## Storage
 
-| What | Size (rough) |
-|---|---|
-| Audio, 10 min a night | ~5 MB per night, **~2 GB per year** |
-| Speech model | a few hundred MB |
-| LLM | ~1.5–3 GB |
-| Database and transcripts | negligible |
-
-Everything lives in app-private storage, which Android's device encryption covers.
+| What | Size (rough) | Where |
+|---|---|---|
+| Audio, 10 min a night | ~5 MB per night, **~2 GB per year** | space folder |
+| Session files | a few KB each | space folder |
+| Photos | as picked | space folder |
+| Speech model + LLM | ~2–3.5 GB | each phone, app-private |
+| Index database | small | each phone, app-private |
 
 ## Privacy guarantees (and how to check them)
 
 | Guarantee | How |
 |---|---|
-| The V1 app cannot talk to any network | No `INTERNET` permission in the manifest, enforced by Android. You can check it under *Settings → Apps → dream2gether → Permissions*. |
-| No silent cloud backup of your recordings | `allowBackup="false"` and data-extraction rules that exclude everything. Backups happen only through our own encrypted export. |
+| Our app cannot talk to any network | No `INTERNET` permission, enforced by Android. Syncthing does the syncing, end-to-end encrypted between your devices. With the Git adapter this guarantee doesn't hold. |
+| No cloud AI | Speech-to-text and the LLM run on the device. |
+| No silent cloud backup | `allowBackup="false"`, plus data-extraction rules that exclude everything. |
 | No third-party code phoning home | No analytics, ads or crash-reporting SDKs. Dependencies are reviewed. |
-| The mic is on only when you press the button | Recording runs in a foreground service started by the button, with a visible notification, auto-stop and a hard cap. |
-| The app sees only the photos you pick | Android Photo Picker, no gallery permission. Picked photos are copied into the app. |
-| Private moments stay private | Excluded from recaps, exports and the recap prompt. |
+| The mic is on only when someone presses the button | A foreground service started by the button, with a visible notification, auto-stop and a hard cap. |
+| The app sees only the photos you pick | Android Photo Picker, no gallery permission. |
+| Private moments stay inside the space | Excluded from recaps and exports. |
 | Exports go only where you put them | The system file picker chooses the destination. The app warns when that destination is a cloud folder. |
 | Nobody else opens the journal | Optional biometric app lock. |
 
 ## Backup & restore
 
-- **Archive.** `dream2gether-backup-YYYY-MM-DD.d2g` is an encrypted archive: a key derived from
-  a passphrase you choose, with authenticated encryption.
-- **Contents.** Database (as JSON), all audio and all photos. Models are not included; they
-  re-import separately.
-- **Restore.** Onto a new phone, or into the V2 box.
-- **Reminder.** A gentle monthly nudge (*"Last backup was 34 days ago"*), because a phone-only
-  archive is only as safe as its last backup.
+- **With Syncthing, every device is already a full copy.** Two phones means two copies, three
+  with the V2 box.
+- **For a copy that survives losing every device:** export an encrypted archive
+  (`dream2gether-backup-YYYY-MM-DD.d2g`) to a USB stick or computer. It's the space folder,
+  encrypted with a passphrase you choose. A gentle monthly reminder nudges you.
+- **New phone:** add it to the Syncthing share, or restore the archive.
 
 ## V2: the bedside box
 
-The box does everything the phone does: record, transcribe, extract, archive. The phone app
-switches to **box mode** and works as a remote control and viewer.
+- **One more device in the space.** The box records, transcribes, extracts and writes session
+  files exactly like a phone. Both phones see its nights through the same sync.
+- **Firewalled.** The box's firewall blocks all outbound internet traffic; Syncthing works on
+  the home network. Updates are a deliberate, manual step.
+- **Re-processing.** It can re-run old nights from lighter phones with bigger models.
 
 **Hardware (draft bill of materials)**
 - Raspberry Pi 5. Get the 16 GB model if you want a bigger LLM.
-- An NVMe SSD (via an M.2 HAT) for the archive. It's more reliable than a microSD card for
-  years of recordings.
+- An NVMe SSD (via an M.2 HAT) for the space folder.
 - A **passive** cooling case. A fan humming next to the bed is a deal-breaker.
 - Microphone: an omnidirectional USB conference mic. A mic HAT also works; check Pi 5 driver
   support before buying.
@@ -238,24 +247,8 @@ switches to **box mode** and works as a remote control and viewer.
   morning, and emits no light at night.
 - Optional: an LED ring (slow breathing while recording, one warm blink when moments are ready).
 
-**Software (`box/`)**
-- A button daemon. Press to start (LED breathes), press to stop, long-press to discard.
-- The processing runs on the same `core` on the JVM, with whisper.cpp and llama.cpp built for
-  arm64. It runs as soon as a recording ends; it's done by morning.
-- A LAN-only API that the phone pairs with by scanning a QR code (shared key, encrypted
-  connection).
-- The box's firewall blocks all outbound internet traffic. Updates are a deliberate, manual
-  step.
-
-**Phone in box mode.** Talking to the box needs network permission. So box mode is a separate
-build flavor, and the offline V1 flavor stays permission-free. In box mode the app only connects
-to the paired box on the local network.
-
-**Moving from V1 to V2.** Restore the V1 backup onto the box, and all past nights and moments
-come along.
-
 **Talking-stick mode.** With one button per partner, you hold yours while you speak. That gives
-perfect who-said-what attribution with no voice recognition, and it's a bit of a game.
+perfect who-said-what attribution, and it's a bit of a game.
 
 ## Languages
 
@@ -263,7 +256,7 @@ perfect who-said-what attribution with no voice recognition, and it's a bit of a
   English, plus English prompts and examples.
 - **German and Dutch.**
   - Switch to a multilingual Whisper model; both languages are well supported. Set the language
-    per couple.
+    in `space.yaml`.
   - Add per-language prompts, examples and category labels, and translate the UI strings.
   - Before shipping, check the local LLM's German and Dutch writing on the test set.
 - **Mixing languages mid-sentence** ("we went to the *markt*, so *gezellig*"). Whisper picks
@@ -271,28 +264,27 @@ perfect who-said-what attribution with no voice recognition, and it's a bit of a
   translating the other one's words. Things to try:
   - leave the language unpinned;
   - give the model an initial prompt that itself mixes languages;
-  - use bigger models on the box overnight;
+  - use bigger models on the box;
   - try newer speech models that handle mixing, if there are good on-device ones by then.
 
-  First, record a handful of real mixed evenings as a test set, and ship it only when the
-  transcripts hold up. Because audio is kept, all earlier nights can be re-transcribed once it
-  works.
+  Build a test set of real mixed evenings first. Because audio is kept, all earlier nights can be
+  re-transcribed once it works.
 
 ## Integrations stay outside the app
 
-The app is an offline vault. The handover bundle is the only thing designed to leave it, and only
-when you export it. Integrations work on the bundle, separately from the app. For example, a
-small companion script on a computer could later turn a month's bundle into a Google Photos
-album. That still works under Google's 2025 Library API rules, because an app may create albums
-and upload photos itself. It just can't search your existing library.
+The app works on a private folder. The handover bundle is the only thing designed to leave the
+space, and only when you export it. Integrations work on the bundle, separately from the app.
+For example, a small companion script on a computer could later turn a month's bundle into a
+Google Photos album. That still works under Google's 2025 Library API rules, because an app may
+create albums and upload photos itself. It just can't search your existing library.
 
 ## Build plan
 
 | Step | What | Why first |
 |---|---|---|
-| **M0** | Laptop test, fully offline: whisper.cpp plus 2–3 candidate LLMs on 3–5 real (or role-played) English evenings, with a small expected-moments list per night | Picks the models and prompt before any app code; checks they're fast enough on your phone |
-| **M1** | Android recorder & archive: record, auto-stop, list, play | You start collecting nights from week one, and AI processing can catch up later |
-| **M2** | On-device transcription and extraction, overnight while charging | The core of the idea |
-| **M3** | Moments inbox, editing, ▶️ playback, photos | Day-to-day use |
-| **M4** | Monthly recap, handover export, encrypted backup | The payoff, and safety |
+| **M0** | Laptop test, fully offline: whisper.cpp plus 2–3 candidate LLMs on 3–5 real (or role-played) English evenings. Output is real session files. | Picks the models and prompt, and settles the file format |
+| **M1** | Android recorder: choose space folder, record, auto-stop, write audio plus a bare session file, list and play nights from both phones (Syncthing does the sync) | Both of you start collecting nights from week one |
+| **M2** | On-device transcription and extraction overnight; fill in session files | The core of the idea |
+| **M3** | Moments inbox, editing, conflict prompt, ▶️ playback, photos | Day-to-day use |
+| **M4** | Monthly recap file and screen, handover export, encrypted backup | The payoff, and safety |
 | **M5** | Evening questions, bedtime reminder, polish | Making it a habit |

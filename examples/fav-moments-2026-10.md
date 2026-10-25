@@ -20,7 +20,7 @@ stats:
   who: { both: 7, a: 3, b: 2 }
   top_people: [{ name: "Mila & Jonas", count: 2 }]
   top_places: [{ name: "Mila & Jonas' place", count: 2 }]
-  firsts: [m-2026-10-07-ramen, m-2026-10-10-bouldering]
+  firsts: [m-2026-10-07-ramen-n9qe, m-2026-10-10-bouldering-b2kd]
 ---
 
 <!-- Fictional sample data for illustration. "Who" and quote attributions were set by hand in the app. -->
@@ -57,7 +57,7 @@ had a taste, it would be chestnuts that are slightly too hot.
 ### Week 40 · 28 Sep – 4 Oct
 
 #### 🍂 First proper autumn walk
-<!-- moment: m-2026-10-01-autumn-walk -->
+<!-- moment: m-2026-10-01-autumn-walk-q7rx -->
 **When** Thu 1 Oct · **Where** riverside path · **Who** both · **Tags** outdoors, us
 
 Straight after work, still in office shoes, we took the long way home along the river. It was the
@@ -70,7 +70,7 @@ first evening that really smelled like autumn: wet leaves, someone's fireplace, 
 _No photo yet · hint: river path, golden leaves, dusk_
 
 #### 🌰 Hot chestnuts at the farmers' market
-<!-- moment: m-2026-10-03-chestnuts -->
+<!-- moment: m-2026-10-03-chestnuts-p8nc -->
 **When** Sat 3 Oct · **Where** farmers' market · **Who** Sam · **Tags** food, outdoors
 
 The chestnut stand is back. We burnt our fingers on the first bag, bought a second one anyway and
@@ -81,7 +81,7 @@ ate them on the bench by the fountain while the market packed up around us.
 ![Paper bag of chestnuts on the bench](photos/2026-10-03-chestnuts-1.jpg)
 
 #### 🎲 Board game rematch at Mila & Jonas'
-<!-- moment: m-2026-10-04-board-game -->
+<!-- moment: m-2026-10-04-board-game-h9mf -->
 **When** Sun 4 Oct · **Where** Mila & Jonas' place · **Who** Alex · **Tags** people, silly
 
 After four lost games in a row, Alex finally won, by one point and with a route nobody saw
@@ -96,7 +96,7 @@ _No photo yet · hint: board game, kitchen table, apple cake_
 ### Week 41 · 5–11 Oct
 
 #### 🍜 Ramen from scratch
-<!-- moment: m-2026-10-07-ramen -->
+<!-- moment: m-2026-10-07-ramen-n9qe -->
 **When** Wed 7 Oct · **Where** home · **Who** both · **Tags** food, cozy · ✨ first time · ⭐
 
 Six hours of broth, two burnt eggs, one perfect bowl each. We ate on the living room floor
@@ -110,7 +110,7 @@ because the table was still covered in flour.
 ![The flour-covered table](photos/2026-10-07-ramen-2.jpg)
 
 #### 🧗 First bouldering session
-<!-- moment: m-2026-10-10-bouldering -->
+<!-- moment: m-2026-10-10-bouldering-b2kd -->
 **When** Sat 10 Oct · **Where** boulder gym · **Who** Alex · **Tags** sport, adventure · ✨ first time · ✅ dream come true
 
 Shaky arms and chalk everywhere. Alex topped a yellow route on the fourth try while Sam cheered
@@ -123,7 +123,7 @@ far too loudly for a quiet gym.
 ### Week 42 · 12–18 Oct
 
 #### 📞 Long call with Grandma Rosi
-<!-- moment: m-2026-10-14-rosi-call -->
+<!-- moment: m-2026-10-14-rosi-call-w4tz -->
 **When** Wed 14 Oct · **Where** – · **Who** Sam · **Tags** people
 
 An hour and a half on the phone. Rosi told the story of how she met Grandpa at a dance, in a
@@ -136,7 +136,7 @@ version none of us had heard before, with a stolen bicycle in it.
 _No photo yet · hint: old photo of Rosi & Grandpa_
 
 #### ⛈️ Storm watching with tea
-<!-- moment: m-2026-10-17-storm -->
+<!-- moment: m-2026-10-17-storm-t3ob -->
 **When** Sat 17 Oct · **Where** home · **Who** both · **Tags** cozy, us · ⭐
 
 The power flickered twice, so we switched all the lights off on purpose. Then we sat by the
@@ -149,7 +149,7 @@ window with ginger tea and counted the seconds between lightning and thunder.
 _No photo yet · hint: window, rain, two mugs_
 
 #### 🎬 Double feature at the old cinema
-<!-- moment: m-2026-10-18-cinema -->
+<!-- moment: m-2026-10-18-cinema-r2ye -->
 **When** Sun 18 Oct · **Where** old cinema · **Who** both · **Tags** culture, us
 
 Two black-and-white films back to back. The shared bucket of popcorn was empty before the first
@@ -162,7 +162,7 @@ _No photo yet · hint: cinema entrance, tickets_
 ### Week 43 · 19–25 Oct
 
 #### 🐕 Pepper finally likes Alex
-<!-- moment: m-2026-10-20-pepper -->
+<!-- moment: m-2026-10-20-pepper-g7ls -->
 **When** Tue 20 Oct · **Where** stairwell · **Who** Alex · **Tags** silly, little-things
 
 After two years of growling, the neighbours' dog Pepper rolled over for a belly rub. Alex will
@@ -175,7 +175,7 @@ not stop talking about it.
 _No photo yet · hint: Pepper, stairwell_
 
 #### 🎃 Pumpkin carving
-<!-- moment: m-2026-10-24-pumpkins -->
+<!-- moment: m-2026-10-24-pumpkins-x5ja -->
 **When** Sat 24 Oct · **Where** home · **Who** both · **Tags** cozy, silly
 
 Alex carved a classic grin. Sam carved a spider "with eight legs, for accuracy", which collapsed
@@ -189,7 +189,7 @@ by Sunday. We roasted the seeds with paprika.
 ### Week 44 · 26 Oct – 1 Nov
 
 #### 🌅 Sunrise on the way to work
-<!-- moment: m-2026-10-26-sunrise -->
+<!-- moment: m-2026-10-26-sunrise-d6vu -->
 **When** around 26–28 Oct (approx.) · **Where** tram stop · **Who** both · **Tags** little-things, us
 
 For once we were both up early, so we walked to the tram together. The whole sky went pink behind
@@ -200,7 +200,7 @@ the church tower.
 _No photo yet · hint: pink sky, church tower, early morning_
 
 #### 🕷️ Halloween at Mila & Jonas'
-<!-- moment: m-2026-10-31-halloween -->
+<!-- moment: m-2026-10-31-halloween-k3f9 -->
 **When** Sat 31 Oct · **Where** Mila & Jonas' place · **Who** both · **Tags** people, silly · ⭐
 
 Sam went as the pumpkin spider, now with sturdier legs. Alex went as "a guy who forgot it was a
@@ -238,16 +238,16 @@ album:
   description: "October: Chestnuts, Storms & a Very Brave Spider"
   cover: photos/2026-10-07-ramen-1.jpg
   items:
-    - { moment: m-2026-10-01-autumn-walk, date: 2026-10-01, photos: [], want_photo: true, search_hints: [river, autumn leaves, dusk] }
-    - { moment: m-2026-10-03-chestnuts, date: 2026-10-03, photos: [photos/2026-10-03-chestnuts-1.jpg] }
-    - { moment: m-2026-10-04-board-game, date: 2026-10-04, photos: [], want_photo: true, search_hints: [board game, apple cake] }
-    - { moment: m-2026-10-07-ramen, date: 2026-10-07, photos: [photos/2026-10-07-ramen-1.jpg, photos/2026-10-07-ramen-2.jpg] }
-    - { moment: m-2026-10-10-bouldering, date: 2026-10-10, photos: [photos/2026-10-10-bouldering-1.jpg] }
-    - { moment: m-2026-10-14-rosi-call, date: 2026-10-14, photos: [], want_photo: false }
-    - { moment: m-2026-10-17-storm, date: 2026-10-17, photos: [], want_photo: true, search_hints: [window, rain, tea] }
-    - { moment: m-2026-10-18-cinema, date: 2026-10-18, photos: [], want_photo: true, search_hints: [cinema, tickets] }
-    - { moment: m-2026-10-20-pepper, date: 2026-10-20, photos: [], want_photo: true, search_hints: [dog] }
-    - { moment: m-2026-10-24-pumpkins, date: 2026-10-24, photos: [photos/2026-10-24-pumpkins-1.jpg, photos/2026-10-24-pumpkins-2.jpg] }
-    - { moment: m-2026-10-26-sunrise, date: { from: 2026-10-26, to: 2026-10-28 }, photos: [], want_photo: true, search_hints: [sunrise, pink sky] }
-    - { moment: m-2026-10-31-halloween, date: 2026-10-31, photos: [photos/2026-10-31-halloween-1.jpg] }
+    - { moment: m-2026-10-01-autumn-walk-q7rx, date: 2026-10-01, photos: [], want_photo: true, search_hints: [river, autumn leaves, dusk] }
+    - { moment: m-2026-10-03-chestnuts-p8nc, date: 2026-10-03, photos: [photos/2026-10-03-chestnuts-1.jpg] }
+    - { moment: m-2026-10-04-board-game-h9mf, date: 2026-10-04, photos: [], want_photo: true, search_hints: [board game, apple cake] }
+    - { moment: m-2026-10-07-ramen-n9qe, date: 2026-10-07, photos: [photos/2026-10-07-ramen-1.jpg, photos/2026-10-07-ramen-2.jpg] }
+    - { moment: m-2026-10-10-bouldering-b2kd, date: 2026-10-10, photos: [photos/2026-10-10-bouldering-1.jpg] }
+    - { moment: m-2026-10-14-rosi-call-w4tz, date: 2026-10-14, photos: [], want_photo: false }
+    - { moment: m-2026-10-17-storm-t3ob, date: 2026-10-17, photos: [], want_photo: true, search_hints: [window, rain, tea] }
+    - { moment: m-2026-10-18-cinema-r2ye, date: 2026-10-18, photos: [], want_photo: true, search_hints: [cinema, tickets] }
+    - { moment: m-2026-10-20-pepper-g7ls, date: 2026-10-20, photos: [], want_photo: true, search_hints: [dog] }
+    - { moment: m-2026-10-24-pumpkins-x5ja, date: 2026-10-24, photos: [photos/2026-10-24-pumpkins-1.jpg, photos/2026-10-24-pumpkins-2.jpg] }
+    - { moment: m-2026-10-26-sunrise-d6vu, date: { from: 2026-10-26, to: 2026-10-28 }, photos: [], want_photo: true, search_hints: [sunrise, pink sky] }
+    - { moment: m-2026-10-31-halloween-k3f9, date: 2026-10-31, photos: [photos/2026-10-31-halloween-1.jpg] }
 ```

@@ -18,10 +18,11 @@ a journal you can edit, add photos to and export.
 
 ## Principles
 
-1. **Nothing leaves the device.** Recording, transcription and summarising all happen on the
-   phone (V1) or on the bedside box (V2). There are no cloud services, no accounts and no
-   analytics. The V1 app doesn't even ask for network permission. The only time anything leaves
-   is when *you* export or back up, to a place *you* choose.
+1. **Nothing leaves your devices.** Recording, transcription and summarising happen on the phone
+   that recorded (V1) or on the bedside box (V2). Your phones share one folder of files directly
+   with each other. There are no cloud services, no accounts and no analytics. The app doesn't
+   even ask for network permission. The only time anything leaves is when *you* export or back
+   up, to a place *you* choose.
 2. **Your voices are the treasure.** Recordings are kept. Transcripts and summaries are only the
    index into them.
 3. **Zero friction at night.** One tap, no typing and no reading. In V2 there isn't even a
@@ -31,14 +32,20 @@ a journal you can edit, add photos to and export.
    relationship.
 5. **Low effort by default, editable always.** Moments land in the journal automatically. You
    edit, merge, star or hide them whenever you feel like it, and never *have* to review.
-6. **Your memories, your files.** Every month exports to a plain Markdown bundle. A full
-   encrypted backup is always one tap away.
+6. **Your memories, your files.** Every night is a plain Markdown file (moments plus
+   transcript) in a shared folder, with every month as one more. You can read them without the
+   app.
 
 ## User flows
 
+### 0. One shared space
+You both install the app and point it at the same synced folder: your **space**. A family can
+have more members. Whoever's phone is closer that night records, and everything shows up on all
+phones. See [session file format](session-file-format.md).
+
 ### 1. Nightly capture
-- Tap **Record**. The screen dims to a single soft pulsing dot, and tonight's question is shown
-  briefly.
+- Either of you taps **Record**. The screen dims to a single soft pulsing dot, and tonight's
+  question is shown briefly.
 - A persistent notification shows that the microphone is on, for as long as it is.
 - Tap again to stop. Auto-stop kicks in after ~3 min of silence or a hard cap of 30 min, so it
   never records the whole night.
@@ -62,7 +69,7 @@ A short swipeable story ending in the editable journal and an export button. See
 
 ### 5. Photos
 - **V1:** add photos to a moment with the Android Photo Picker. The app gets only the photos you
-  pick and copies them into its own storage.
+  pick and copies them into the space folder, so both phones see them.
 - **V1.5:** *"There are 6 photos from Sat 18 Oct on this phone, add some?"*, matched locally by
   date and location.
 
@@ -72,15 +79,17 @@ those get captured as dreams. When a later moment fulfils one, it's ticked off: 
 ✅ First bouldering session"*.
 
 ### 7. Backup
-Export an encrypted archive to a USB stick or a computer: every recording, transcript, moment
-and photo. It restores onto a new phone and imports into the V2 box. The app never backs up to
-the cloud by itself.
+Each phone holds a full copy of the space, so two phones already means two copies. For extra
+safety, export an encrypted archive to a USB stick or a computer. The app never backs up to the
+cloud by itself.
 
 ## Features by version
 
 | Feature | V1 | V1.5 | V2 | Later |
 |---|:-:|:-:|:-:|:-:|
+| Shared space: either phone records, everyone sees everything | ✅ | | | |
 | One-tap recording, auto-stop, audio archive | ✅ | | | |
+| One `.md` file per night (moments and transcript) | ✅ | | | |
 | On-device transcription (English) | ✅ | | | |
 | On-device moment extraction | ✅ | | | |
 | ▶️ Hear-it playback per moment | ✅ | | | |
@@ -188,13 +197,18 @@ nights and new mixed ones can then live side by side without a migration.
 
 ## Decided
 
-- **Platform:** Android only for V1. iOS maybe later; the shared core is kept portable for it.
-- **Privacy:** everything stays on the device, including the language model.
+- **Platform:** any Android phone for V1. Model sizes adapt to the phone. iOS maybe later; the
+  shared core is kept portable for it.
+- **Shared space:** a couple (or family) shares one folder. Either phone records; the recording
+  phone processes the night and writes one `.md` session file.
+- **Privacy:** processing stays on the device, including the language model.
 - **Audio:** kept, as the core of the archive. Deleting a single night is always possible.
 - **Language:** English first.
 
 ## Still open
 
-1. **Which phone will do the recording?** On-device models need RAM. A phone with ~8 GB or more
-   runs a better model; a lighter one works with smaller models.
+1. **How do phones share the folder?** *(recommended: Syncthing: phone-to-phone, no cloud, audio
+   comes along. Alternative: a private GitHub repo, with transcripts on GitHub and audio only on
+   the recording phone.)* See
+   [sharing](architecture.md#sharing-between-phones).
 2. **Moments: auto-accept or review first?** *(recommended: auto-accept, edit when you like)*

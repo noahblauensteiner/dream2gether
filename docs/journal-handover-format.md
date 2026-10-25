@@ -54,8 +54,10 @@ fav-moments-2026-10/
 | Dreams added or fulfilled this month | |
 | The latest journal text (your edits win over generated text) | |
 
-- **The database is the source of truth.** Re-exporting regenerates the file. Hand edits to the
-  `.md` are not imported back in V1.
+- **The [session files](session-file-format.md) are the source of truth.**
+  - The monthly file is regenerated from them. Only the journal text keeps your edits.
+  - Inside the space it lives at `months/fav-moments-YYYY-MM.md`, with paths pointing into the
+    space folder. Export rewrites the paths for the bundle layout above.
 - **Late moments.** If a moment for an already-exported month is added later, the app shows
   *"1 late moment added to September"* and offers a re-export.
 
@@ -125,7 +127,7 @@ album:
   description: "October: Chestnuts, Storms & a Very Brave Spider"
   cover: photos/2026-10-07-ramen-1.jpg
   items:
-    - moment: m-2026-10-17-storm
+    - moment: m-2026-10-17-storm-t3ob
       date: 2026-10-17              # or: { from: 2026-10-26, to: 2026-10-28 }
       photos: []
       want_photo: true

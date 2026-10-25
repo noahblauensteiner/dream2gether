@@ -201,14 +201,11 @@ nights and new mixed ones can then live side by side without a migration.
   shared core is kept portable for it.
 - **Shared space:** a couple (or family) shares one folder. Either phone records; the recording
   phone processes the night and writes one `.md` session file.
+- **Sync:** Syncthing, phone to phone over the home network. No cloud, and audio syncs too.
 - **Privacy:** processing stays on the device, including the language model.
 - **Audio:** kept, as the core of the archive. Deleting a single night is always possible.
 - **Language:** English first.
 
 ## Still open
 
-1. **How do phones share the folder?** *(recommended: Syncthing: phone-to-phone, no cloud, audio
-   comes along. Alternative: a private GitHub repo, with transcripts on GitHub and audio only on
-   the recording phone.)* See
-   [sharing](architecture.md#sharing-between-phones).
-2. **Moments: auto-accept or review first?** *(recommended: auto-accept, edit when you like)*
+1. **Moments: auto-accept or review first?** *(recommended: auto-accept, edit when you like)*

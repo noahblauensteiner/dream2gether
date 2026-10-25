@@ -32,9 +32,9 @@ export) and the same kind of engines: whisper.cpp for speech-to-text and a small
 ## Sharing between phones
 
 The app only reads and writes files in the space folder. Moving them between devices is the job
-of a pluggable sync layer:
+of a sync layer. **Decided: Syncthing.** The comparison that led there:
 
-| | **Syncthing** (recommended) | **Private Git repo** (e.g. GitHub) |
+| | **Syncthing** ✅ chosen | Private Git repo (e.g. GitHub), not planned |
 |---|---|---|
 | Where the data lives | Only on your devices | Your devices **plus GitHub's servers** |
 | Audio | Syncs too, so ▶️ works on both phones | Stays on the recording phone (~2 GB a year is too big for git) |
@@ -43,12 +43,9 @@ of a pluggable sync layer:
 | Extras | Every device holds a full copy, which doubles as a backup | Full edit history, readable on github.com |
 | Setup | Install [Syncthing-Fork](https://f-droid.org/packages/com.github.catfriend1.syncthingfork/) on both phones and share one folder | Create a private repo and a fine-grained token per phone |
 
-**Recommendation: Syncthing.** It keeps the "nothing leaves our devices" promise, lets the audio
-come along, and our app stays permission-free.
-
-Git is a possible second adapter. It's useful if you want edit history or to read transcripts on
-the web. Transcripts would then sit on GitHub's servers. Encrypting files before pushing
-(git-crypt or similar) fixes that, but you lose web viewing.
+**Why Syncthing:** it keeps the "nothing leaves our devices" promise, lets the audio come
+along, and our app stays permission-free. Syncthing's own file versioning can be switched on
+for a basic edit history.
 
 **Setting it up.** The app asks for the space folder once, through the system folder picker,
 and remembers it. In Syncthing, that folder is shared with your partner's phone.
@@ -209,7 +206,7 @@ FileSeen  path, modified_at, hash        (to notice synced changes)
 
 | Guarantee | How |
 |---|---|
-| Our app cannot talk to any network | No `INTERNET` permission, enforced by Android. Syncthing does the syncing, end-to-end encrypted between your devices. With the Git adapter this guarantee doesn't hold. |
+| Our app cannot talk to any network | No `INTERNET` permission, enforced by Android. Syncthing does the syncing, end-to-end encrypted between your devices. |
 | No cloud AI | Speech-to-text and the LLM run on the device. |
 | No silent cloud backup | `allowBackup="false"`, plus data-extraction rules that exclude everything. |
 | No third-party code phoning home | No analytics, ads or crash-reporting SDKs. Dependencies are reviewed. |

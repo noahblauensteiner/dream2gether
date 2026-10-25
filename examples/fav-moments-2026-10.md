@@ -15,6 +15,7 @@ stats:
   moments_private: 3
   longest_streak_nights: 5
   photos: 7
+  voice_clips: 12
   categories: { us: 4, silly: 4, cozy: 3, people: 3, food: 2, outdoors: 2, little-things: 2, culture: 1, sport: 1, adventure: 1 }
   who: { both: 7, a: 3, b: 2 }
   top_people: [{ name: "Mila & Jonas", count: 2 }]
@@ -22,7 +23,7 @@ stats:
   firsts: [m-2026-10-07-ramen, m-2026-10-10-bouldering]
 ---
 
-<!-- Fictional sample data for illustration. -->
+<!-- Fictional sample data for illustration. "Who" and quote attributions were set by hand in the app. -->
 
 # 🎃 October: Chestnuts, Storms & a Very Brave Spider
 
@@ -64,6 +65,8 @@ first evening that really smelled like autumn: wet leaves, someone's fireplace, 
 
 > "Can we do this every Thursday?" — Sam
 
+🔊 [Hear it (0:48)](audio/2026-10-01-autumn-walk.m4a)
+
 _No photo yet · hint: river path, golden leaves, dusk_
 
 #### 🌰 Hot chestnuts at the farmers' market
@@ -72,6 +75,8 @@ _No photo yet · hint: river path, golden leaves, dusk_
 
 The chestnut stand is back. We burnt our fingers on the first bag, bought a second one anyway and
 ate them on the bench by the fountain while the market packed up around us.
+
+🔊 [Hear it (0:35)](audio/2026-10-03-chestnuts.m4a)
 
 ![Paper bag of chestnuts on the bench](photos/2026-10-03-chestnuts-1.jpg)
 
@@ -83,6 +88,8 @@ After four lost games in a row, Alex finally won, by one point and with a route 
 coming. Jonas demanded a recount. Mila's apple cake made losing bearable for everyone else.
 
 > "One point. ONE. I'm framing the scoresheet." — Alex
+
+🔊 [Hear it (1:05)](audio/2026-10-04-board-game.m4a)
 
 _No photo yet · hint: board game, kitchen table, apple cake_
 
@@ -97,6 +104,8 @@ because the table was still covered in flour.
 
 > "Six hours for one bowl of soup and I'd do it again tomorrow." — Sam
 
+🔊 [Hear it (1:12)](audio/2026-10-07-ramen.m4a)
+
 ![Two bowls of ramen on the floor](photos/2026-10-07-ramen-1.jpg)
 ![The flour-covered table](photos/2026-10-07-ramen-2.jpg)
 
@@ -106,6 +115,8 @@ because the table was still covered in flour.
 
 Shaky arms and chalk everywhere. Alex topped a yellow route on the fourth try while Sam cheered
 far too loudly for a quiet gym.
+
+🔊 [Hear it (0:57)](audio/2026-10-10-bouldering.m4a)
 
 ![Alex at the top of the yellow route](photos/2026-10-10-bouldering-1.jpg)
 
@@ -120,6 +131,8 @@ version none of us had heard before, with a stolen bicycle in it.
 
 > "And that's why we never went back to that village." — Grandma Rosi, via Sam
 
+🔊 [Hear it (1:40)](audio/2026-10-14-rosi-call.m4a)
+
 _No photo yet · hint: old photo of Rosi & Grandpa_
 
 #### ⛈️ Storm watching with tea
@@ -131,6 +144,8 @@ window with ginger tea and counted the seconds between lightning and thunder.
 
 > "Eleven seconds! It's moving away." — Sam
 
+🔊 [Hear it (0:44)](audio/2026-10-17-storm.m4a)
+
 _No photo yet · hint: window, rain, two mugs_
 
 #### 🎬 Double feature at the old cinema
@@ -139,6 +154,8 @@ _No photo yet · hint: window, rain, two mugs_
 
 Two black-and-white films back to back. The shared bucket of popcorn was empty before the first
 film even started, so the intermission ice cream saved us.
+
+🔊 [Hear it (0:39)](audio/2026-10-18-cinema.m4a)
 
 _No photo yet · hint: cinema entrance, tickets_
 
@@ -153,6 +170,8 @@ not stop talking about it.
 
 > "She CHOSE me." — Alex
 
+🔊 [Hear it (0:28)](audio/2026-10-20-pepper.m4a)
+
 _No photo yet · hint: Pepper, stairwell_
 
 #### 🎃 Pumpkin carving
@@ -161,6 +180,8 @@ _No photo yet · hint: Pepper, stairwell_
 
 Alex carved a classic grin. Sam carved a spider "with eight legs, for accuracy", which collapsed
 by Sunday. We roasted the seeds with paprika.
+
+🔊 [Hear it (0:51)](audio/2026-10-24-pumpkins.m4a)
 
 ![Two pumpkins on the windowsill](photos/2026-10-24-pumpkins-1.jpg)
 ![The eight-legged spider pumpkin](photos/2026-10-24-pumpkins-2.jpg)
@@ -174,6 +195,8 @@ by Sunday. We roasted the seeds with paprika.
 For once we were both up early, so we walked to the tram together. The whole sky went pink behind
 the church tower.
 
+🔊 [Hear it (0:22)](audio/2026-10-26-sunrise.m4a)
+
 _No photo yet · hint: pink sky, church tower, early morning_
 
 #### 🕷️ Halloween at Mila & Jonas'
@@ -182,6 +205,8 @@ _No photo yet · hint: pink sky, church tower, early morning_
 
 Sam went as the pumpkin spider, now with sturdier legs. Alex went as "a guy who forgot it was a
 costume party". Jonas still gave the award to the spider.
+
+🔊 [Hear it (1:02)](audio/2026-10-31-halloween.m4a)
 
 ![Sam in the spider costume with the award](photos/2026-10-31-halloween-1.jpg)
 
@@ -192,7 +217,8 @@ costume party". Jonas still gave the award to the spider.
 - 🥇 Podium: 💞 love & us (4) · 🤪 silly (4) · 🛋️ cozy (3)
 - 👯 Starring: **Mila & Jonas** (2×)
 - 🆕 Firsts: ramen from scratch, bouldering
-- 📷 **7 photos**
+- 📷 **7 photos** · 🔊 **12 voice clips**
+- 🎧 Voice of the month: *Ramen from scratch* (1:12)
 - 🗣️ Who remembered what: *Alex remembers the victories, Sam remembers the snacks and the
   stories.*
 - 💬 Quote of the month: *"Six hours for one bowl of soup and I'd do it again tomorrow."* — Sam

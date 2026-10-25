@@ -8,6 +8,10 @@ printed photo book, Notion, or just a folder you keep forever. V1 only *produces
 consumes it automatically yet. That's deliberate, because it lets us design the integrations
 later without touching the app.
 
+It's also the privacy boundary. The app never talks to the internet, so this bundle is the only
+thing designed to leave it, and only when you export it. That's why private moments are never
+in it, and why full-night recordings stay in the app and the encrypted backup.
+
 **Design goals**
 
 - Readable as-is by a human, in any Markdown viewer.
@@ -15,7 +19,7 @@ later without touching the app.
   - YAML front matter for metadata and stats;
   - a predictable block per moment;
   - one machine-readable album plan at the end.
-- Self-contained: the file plus its `photos/` folder is the complete month.
+- Self-contained: the file plus its `photos/` and `audio/` folders is the complete month.
 
 A full example is in [`examples/fav-moments-2026-10.md`](../examples/fav-moments-2026-10.md).
 
@@ -24,15 +28,20 @@ A full example is in [`examples/fav-moments-2026-10.md`](../examples/fav-moments
 ```
 fav-moments-2026-10/
 ├── fav-moments-2026-10.md
-└── photos/
-    ├── 2026-10-03-chestnuts-1.jpg
-    ├── 2026-10-07-ramen-1.jpg
+├── photos/
+│   ├── 2026-10-03-chestnuts-1.jpg
+│   ├── 2026-10-07-ramen-1.jpg
+│   └── …
+└── audio/
+    ├── 2026-10-07-ramen.m4a
     └── …
 ```
 
 - Photos are named `{happened_on}-{slug}-{n}.{ext}`.
 - They are copied as originals, with EXIF kept, since this is a keepsake.
-- The app shares the bundle as a zip.
+- Voice clips are named `{happened_on}-{slug}.m4a`. Each is the stretch of the night's recording
+  where you told that moment, with a second of padding either side.
+- The app shares the bundle as a zip, saved wherever you pick.
 
 ## What lands in the journal
 
@@ -40,8 +49,9 @@ fav-moments-2026-10/
 |---|---|
 | Moments whose `happened_on` falls in the month (not the recording date: Sep 30 told on Oct 2 belongs to September) | Moments marked **private** |
 | Approximate dates, placed by their start date | Moments that are hidden, deleted or merged into another moment |
-| Photos attached to included moments | Transcripts and audio (never exported) |
-| Dreams added or fulfilled this month | Dreams marked private |
+| Photos attached to included moments | Full-night recordings and transcripts (only in the app and the encrypted backup) |
+| Voice clips of included moments (export option, on by default) | Dreams marked private |
+| Dreams added or fulfilled this month | |
 | The latest journal text (your edits win over generated text) | |
 
 - **The database is the source of truth.** Re-exporting regenerates the file. Hand edits to the
@@ -67,15 +77,15 @@ fav-moments-2026-10/
 | `schema` | string | `dream2gether/journal-handover@1` |
 | `type` | `monthly` | `weekly`, `yearly` and `custom` are reserved for later |
 | `period` | `YYYY-MM` | |
-| `title`, `emoji` | string | Claude-written, editable |
+| `title`, `emoji` | string | written by the on-device model, editable |
 | `couple.a`, `couple.b` | string | display names |
 | `language` | BCP 47 | e.g. `de`, `en` |
 | `timezone` | IANA | e.g. `Europe/Vienna` |
 | `generated_at` | ISO 8601 | |
 | `journal_edited` | bool | true if the journal text was changed by hand |
-| `stats` | map | `nights_recorded`, `moments_in_journal`, `moments_private`, `longest_streak_nights`, `photos`, `categories` (key → count), `who` (`both`/`a`/`b` → count), `top_people`, `top_places`, `firsts` |
+| `stats` | map | `nights_recorded`, `moments_in_journal`, `moments_private`, `longest_streak_nights`, `photos`, `voice_clips`, `categories` (key → count), `who` (`both`/`a`/`b` → count), `top_people`, `top_places`, `firsts` |
 
-Stats are computed by the hub, never by the LLM.
+Stats are computed in code, never by the LLM.
 
 ### Moment block
 
@@ -88,12 +98,16 @@ Stats are computed by the hub, never by the LLM.
 
 > "{quote}" — {quote_by}
 
+🔊 [Hear it ({m:ss})](audio/{file})
+
 ![{caption}]({photos/file})
 _No photo yet · hint: {photo_hint}_
 ```
 
 - The HTML comment carries the stable moment id. It's invisible when rendered, and parsers use
   it to anchor each block.
+- The 🔊 line appears only when voice clips are exported.
+- Quotes have `— {quote_by}` only when you've set who said it.
 - Each moment has either image lines or the "no photo yet" line, never both.
 - **Where**: `–` when unknown.
 - **Tags**: category keys from [concept.md](concept.md#categories), plus free tags.
@@ -102,8 +116,8 @@ _No photo yet · hint: {photo_hint}_
 
 The final section is a single fenced `yaml` block. It's a ready-made brief for building a photo
 album: which moments, which dates, which photos are already picked, and what to look for when a
-moment has no photo yet. See the [Google Photos notes](architecture.md#google-photos-later-whats-possible)
-for why the user still picks the photos themselves.
+moment has no photo yet. A future companion tool can turn it into an album, outside the app; see
+[integrations](architecture.md#integrations-stay-outside-the-app).
 
 ```yaml
 album:

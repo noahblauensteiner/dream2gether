@@ -23,9 +23,9 @@ with each other, with no cloud and no servers.
 
 | Version | Platform | What you get |
 |---|---|---|
-| **V1** | Any Android phone, English | Shared space (either phone records, a synced folder of `.md` files), one-tap recording, audio archive, on-device transcription and moment extraction, moments inbox & editing, ▶️ hear-it playback, evening questions, manual photos, monthly recap, handover export, encrypted backup |
+| **V1** | Any Android phone, English | Shared space (either phone records, a shared folder of Markdown notes), laptop view in Obsidian, stars/highlights/comments, albums & projects, one-tap recording, audio archive, on-device transcription and moment extraction, moments inbox & editing, ▶️ hear-it playback, evening questions, manual photos, monthly recap, handover export, encrypted backup |
 | **V1.5** | Android | Dream list ("we should totally…"), photo suggestions from the phone gallery, "one year ago tonight" |
-| **V2** | Raspberry Pi bedside box | Physical button, no screen at night, LED feedback, optional e-ink question. The box does everything locally; the phone browses over home Wi-Fi. "Talking stick" mode records who said what |
+| **V2** | Raspberry Pi bedside box | Physical button, no screen at night, LED feedback, optional e-ink question. The box does everything locally and joins the same space folder. "Talking stick" mode records who said what |
 | **Languages** | all | 🇩🇪 German, 🇳🇱 Dutch, then mixing languages mid-sentence |
 | **Later** | | iOS, Year Wrapped with voice clips, printed photo book, optional photo-album companion |
 
@@ -35,8 +35,8 @@ with each other, with no cloud and no servers.
   monthly recap, evening questions, language roadmap
 - [Architecture](docs/architecture.md): on-device processing steps, the shared core, models,
   data model, privacy guarantees, backup, the Pi box
-- [Space & session file format](docs/session-file-format.md): the shared folder and the
-  per-night `.md` file (moments plus transcript)
+- [Space & file formats](docs/session-file-format.md): the shared folder (also an Obsidian
+  vault), night notes, moment notes, collections
 - [Journal handover format](docs/journal-handover-format.md): the `.md` bundle that says what
   lands in a month's journal
 - [Example handover file](examples/fav-moments-2026-10.md): a fictional October 2026

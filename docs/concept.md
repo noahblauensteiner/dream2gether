@@ -32,16 +32,16 @@ a journal you can edit, add photos to and export.
    relationship.
 5. **Low effort by default, editable always.** Moments land in the journal automatically. You
    edit, merge, star or hide them whenever you feel like it, and never *have* to review.
-6. **Your memories, your files.** Every night is a plain Markdown file (moments plus
-   transcript) in a shared folder, with every month as one more. You can read them without the
-   app.
+6. **Your memories, your files.** Every night and every moment is a plain Markdown note in a
+   shared folder. The folder is also an Obsidian vault, so you can browse and edit it on a
+   laptop without our app.
 
 ## User flows
 
 ### 0. One shared space
 You both install the app and point it at the same synced folder: your **space**. A family can
 have more members. Whoever's phone is closer that night records, and everything shows up on all
-phones. See [session file format](session-file-format.md).
+phones. See [file formats](session-file-format.md).
 
 ### 1. Nightly capture
 - Either of you taps **Record**. The screen dims to a single soft pulsing dot, and tonight's
@@ -89,7 +89,11 @@ cloud by itself.
 |---|:-:|:-:|:-:|:-:|
 | Shared space: either phone records, everyone sees everything | ✅ | | | |
 | One-tap recording, auto-stop, audio archive | ✅ | | | |
-| One `.md` file per night (moments and transcript) | ✅ | | | |
+| Plain Markdown notes: one per night, one per moment | ✅ | | | |
+| Laptop view and editing in Obsidian (boards, database views) | ✅ | | | |
+| Stars, ==highlights==, 💬 comments | ✅ | | | |
+| Collections: albums, projects, artworks | ✅ | | | |
+| Share a moment as a card (share sheet) | ✅ | | | |
 | On-device transcription (English) | ✅ | | | |
 | On-device moment extraction | ✅ | | | |
 | ▶️ Hear-it playback per moment | ✅ | | | |
@@ -200,8 +204,10 @@ nights and new mixed ones can then live side by side without a migration.
 - **Platform:** any Android phone for V1. Model sizes adapt to the phone. iOS maybe later; the
   shared core is kept portable for it.
 - **Shared space:** a couple (or family) shares one folder. Either phone records; the recording
-  phone processes the night and writes one `.md` session file.
-- **Sync:** Syncthing, phone to phone over the home network. No cloud, and audio syncs too.
+  phone processes the night and writes a night note plus one note per moment.
+- **Laptop:** Obsidian on the same folder. Our own desktop app maybe later (Compose
+  Multiplatform), never Electron.
+- **Sync:** manual copying over USB to start, Syncthing later.
 - **Privacy:** processing stays on the device, including the language model.
 - **Audio:** kept, as the core of the archive. Deleting a single night is always possible.
 - **Language:** English first.
@@ -209,6 +215,4 @@ nights and new mixed ones can then live side by side without a migration.
 
 ## Still open
 
-1. **Desktop / laptop view.** Viewing and editing on a computer too: moving moments around,
-   highlights, comments, albums and projects. *(proposed: Obsidian on the same synced folder
-   for V1; our own desktop app later via Compose Multiplatform, not Electron)*
+Nothing right now.

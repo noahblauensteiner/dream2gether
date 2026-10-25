@@ -54,10 +54,12 @@ fav-moments-2026-10/
 | Dreams added or fulfilled this month | |
 | The latest journal text (your edits win over generated text) | |
 
-- **The [session files](session-file-format.md) are the source of truth.**
-  - The monthly file is regenerated from them. Only the journal text keeps your edits.
-  - Inside the space it lives at `months/fav-moments-YYYY-MM.md`, with paths pointing into the
-    space folder. Export rewrites the paths for the bundle layout above.
+- **The [night and moment notes](session-file-format.md) are the source of truth.**
+  - Inside the space, the month lives as a live month note (`months/YYYY-MM.md`) that embeds
+    the moment notes.
+  - Export renders it into this self-contained format: moment text copied in, plain Markdown
+    links, photos and clips bundled.
+  - Only the journal text keeps your edits; everything else is regenerated.
 - **Late moments.** If a moment for an already-exported month is added later, the app shows
   *"1 late moment added to September"* and offers a re-export.
 

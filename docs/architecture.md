@@ -5,23 +5,27 @@
 - A couple (or family) shares one **space**. **Any** member's Android phone can record.
 - The phone that records does all the processing itself: transcription (whisper.cpp) and moment
   extraction (a small local language model). There are no servers and no cloud AI.
-- The result is one Markdown **session file** per night: the moments plus the full transcript.
-  See the [session file format](session-file-format.md).
-- **Files are the source of truth.** The space is a folder synced between your devices. Each
+- The result is plain Markdown notes: one **night note** (audio, transcript, links) and one
+  **moment note** per moment. See the [file formats](session-file-format.md).
+- **Files are the source of truth.** The space is a folder shared between your devices. Each
   phone's database is only an index rebuilt from it.
+- **Laptop: Obsidian.** The space folder is also an Obsidian vault, so viewing, editing, comments,
+  boards and albums work on a computer with no extra app.
 - **V2:** the Raspberry Pi bedside box is just another device in the space. It records,
-  processes and writes session files the same way.
+  processes and writes notes the same way.
 
 ```mermaid
 flowchart LR
   subgraph pa["📱 Alex's phone"]
-    ra["🎙️ record → whisper.cpp → local LLM"] --> fa[("space folder<br/>sessions · audio · photos · months")]
+    ra["🎙️ record → whisper.cpp → local LLM"] --> fa[("space folder<br/>nights · moments · audio · photos")]
   end
   subgraph pb["📱 Sam's phone"]
     rb["🎙️ record → whisper.cpp → local LLM"] --> fb[("space folder")]
   end
   box["🔘 Pi bedside box (V2)"]
-  fa <-- "sync" --> fb
+  laptop["💻 Laptop: Obsidian"]
+  fa <-- "copy / sync" --> fb
+  fa <-- "copy / sync" --> laptop
   fa <-- "sync" --> box
   fa -- "you tap Export / Backup" --> out["📦 Handover bundle · 🔐 backup"]
 ```
@@ -32,7 +36,10 @@ export) and the same kind of engines: whisper.cpp for speech-to-text and a small
 ## Sharing between phones
 
 The app only reads and writes files in the space folder. Moving them between devices is the job
-of a sync layer. **Decided: Syncthing.** The comparison that led there:
+of a sync layer, outside the app.
+
+- **Start: manual copying** over USB (details in [syncing](session-file-format.md#syncing)).
+- **Later: Syncthing**, chosen over a Git repo:
 
 | | **Syncthing** ✅ chosen | Private Git repo (e.g. GitHub), not planned |
 |---|---|---|
@@ -48,7 +55,28 @@ along, and our app stays permission-free. Syncthing's own file versioning can be
 for a basic edit history.
 
 **Setting it up.** The app asks for the space folder once, through the system folder picker,
-and remembers it. In Syncthing, that folder is shared with your partner's phone.
+and remembers it. Pick a normal folder like `Documents/dream2gether-space`, so it's visible over
+USB, and later to Syncthing.
+
+## Laptop: Obsidian
+
+- **What it is.** The space folder is an [Obsidian](https://obsidian.md) vault. Obsidian is a
+  free, local-first Markdown app for desktop and mobile.
+- **Why not Electron or a web app.** An Electron app would mean building the UI twice in a
+  second language. A web app would need a server, or couldn't open the folder on the phone.
+  Obsidian costs zero code.
+- **What you get there:**
+  - read and edit moments;
+  - ⭐ stars and `==highlights==`;
+  - 💬 comments;
+  - albums, projects and artworks (collection notes);
+  - free-form boards (Canvas);
+  - database-style views (Bases);
+  - the audio player.
+- **The app's side.** It must read whatever Obsidian writes. It parses front matter and known
+  sections, and keeps everything else untouched.
+- **Later.** If we want our own desktop app, build it with Compose Multiplatform from the same
+  Kotlin code as the Android app.
 
 ## Processing steps (on the recording phone)
 
@@ -83,14 +111,15 @@ never overwritten.
      - recording date and weekday;
      - tonight's question;
      - the members' names;
-     - the glossary from `space.yaml`;
+     - the glossary from `space.md`;
      - titles of recent moments from the whole space, so repeats get linked instead of
        duplicated.
    - Each moment cites the segments it came from. That's what powers ▶️ "hear it".
-6. **Write the session file and audio** into the space folder. Sync carries them to the other
-   devices.
+6. **Write the night note, moment notes and audio** into the space folder. Copying or sync
+   carries them to the other devices.
 7. **Monthly recap**
-   - Whichever phone notices changes regenerates `months/fav-moments-YYYY-MM.md`.
+   - Whichever phone notices changes regenerates the month note `months/YYYY-MM.md`. Your
+     journal edits are kept.
    - Stats are computed in code. The LLM writes only the title, the journal and the playful
      lines, from non-private moments.
 8. **Export / backup**: see [handover format](journal-handover-format.md) and
@@ -110,12 +139,13 @@ A 2–4B-parameter on-device model is capable but needs a gentle setup:
 - **Short prompts.** Use one worked example and one task per call.
 - **Chunk long nights.** Split transcripts longer than ~10 min into ~5-min windows. Code then
   merges moments that overlap in segments or titles.
-- **Record what produced each result.** Each session file records the model and prompt version,
-  to know what to re-run.
+- **Record what produced each result.** Each night note records the model and prompt version,
+  to know what to re-run. Moment notes carry a `generated_hash`, so re-processing replaces only
+  moments nobody edited.
 
 ### Extraction output (draft)
 
-The model returns JSON. The core turns it into the session file's Markdown.
+The model returns JSON. The core turns it into moment notes.
 
 ```json
 {
@@ -148,7 +178,7 @@ The model returns JSON. The core turns it into the session file's Markdown.
 - **No minimum phone.** Each phone picks model sizes by its RAM: `small.en` plus a ~4B LLM on
   roomier phones, `base.en` plus a ~2B LLM on lighter ones. A slower phone just takes longer
   overnight.
-- **Mixed models are fine.** The session file notes which models processed it.
+- **Mixed models are fine.** The night note records which models processed it.
 - **Catching up later.** If a light phone recorded a night, any device can re-process it later,
   for example with a bigger model on the V2 box.
 
@@ -168,7 +198,8 @@ The model returns JSON. The core turns it into the session file's Markdown.
 
 Pure Kotlin, using `kotlinx.serialization` and `kotlinx-datetime`, with no Android APIs:
 
-- the space and session file formats (read and write);
+- the space, night, moment and collection note formats (read and write, tolerant of
+  Obsidian edits);
 - prompts, schemas, and date-reference resolution;
 - the moment merge logic and conflict detection;
 - recap stats and the monthly handover file;
@@ -197,7 +228,7 @@ FileSeen  path, modified_at, hash        (to notice synced changes)
 | What | Size (rough) | Where |
 |---|---|---|
 | Audio, 10 min a night | ~5 MB per night, **~2 GB per year** | space folder |
-| Session files | a few KB each | space folder |
+| Night and moment notes | a few KB each | space folder |
 | Photos | as picked | space folder |
 | Speech model + LLM | ~2–3.5 GB | each phone, app-private |
 | Index database | small | each phone, app-private |
@@ -218,17 +249,18 @@ FileSeen  path, modified_at, hash        (to notice synced changes)
 
 ## Backup & restore
 
-- **With Syncthing, every device is already a full copy.** Two phones means two copies, three
-  with the V2 box.
+- **Every device holding the space is a full copy.** Two phones and a laptop means three
+  copies, whether you copy by hand or use Syncthing.
 - **For a copy that survives losing every device:** export an encrypted archive
   (`dream2gether-backup-YYYY-MM-DD.d2g`) to a USB stick or computer. It's the space folder,
   encrypted with a passphrase you choose. A gentle monthly reminder nudges you.
-- **New phone:** add it to the Syncthing share, or restore the archive.
+- **New phone:** copy the space folder onto it (or add it to Syncthing later), or restore the
+  archive.
 
 ## V2: the bedside box
 
-- **One more device in the space.** The box records, transcribes, extracts and writes session
-  files exactly like a phone. Both phones see its nights through the same sync.
+- **One more device in the space.** The box records, transcribes, extracts and writes notes
+  exactly like a phone. Both phones see its nights through the same sync.
 - **Firewalled.** The box's firewall blocks all outbound internet traffic; Syncthing works on
   the home network. Updates are a deliberate, manual step.
 - **Re-processing.** It can re-run old nights from lighter phones with bigger models.
@@ -253,7 +285,7 @@ perfect who-said-what attribution, and it's a bit of a game.
   English, plus English prompts and examples.
 - **German and Dutch.**
   - Switch to a multilingual Whisper model; both languages are well supported. Set the language
-    in `space.yaml`.
+    in `space.md`.
   - Add per-language prompts, examples and category labels, and translate the UI strings.
   - Before shipping, check the local LLM's German and Dutch writing on the test set.
 - **Mixing languages mid-sentence** ("we went to the *markt*, so *gezellig*"). Whisper picks
@@ -279,9 +311,9 @@ create albums and upload photos itself. It just can't search your existing libra
 
 | Step | What | Why first |
 |---|---|---|
-| **M0** | Laptop test, fully offline: whisper.cpp plus 2–3 candidate LLMs on 3–5 real (or role-played) English evenings. Output is real session files. | Picks the models and prompt, and settles the file format |
-| **M1** | Android recorder: choose space folder, record, auto-stop, write audio plus a bare session file, list and play nights from both phones (Syncthing does the sync) | Both of you start collecting nights from week one |
-| **M2** | On-device transcription and extraction overnight; fill in session files | The core of the idea |
-| **M3** | Moments inbox, editing, conflict prompt, ▶️ playback, photos | Day-to-day use |
+| **M0** | Laptop test, fully offline: whisper.cpp plus 2–3 candidate LLMs on 3–5 real (or role-played) English evenings. Output is real night and moment notes, opened in Obsidian. | Picks the models and prompt, settles the file format, sets up the Obsidian starter kit |
+| **M1** | Android recorder: choose space folder, record, auto-stop, write audio plus a bare night note, list and play nights (including ones copied over from the other phone) | Both of you start collecting nights from week one |
+| **M2** | On-device transcription and extraction overnight; write moment notes | The core of the idea |
+| **M3** | Moments inbox, editing, stars, highlights, comments, collections, conflict prompt, ▶️ playback, photos, share card | Day-to-day use |
 | **M4** | Monthly recap file and screen, handover export, encrypted backup | The payoff, and safety |
 | **M5** | Evening questions, bedtime reminder, polish | Making it a habit |

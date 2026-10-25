@@ -19,7 +19,7 @@ are folded in here.
 
 | ID | Item | You can try | Status |
 |---|---|---|---|
-| B-020 | **Vault + dashboard.** `d2g init-space` creates a vault: `space.md`, folders, a CSS snippet, a moments dashboard (Bases: cards by month, category, ⭐), and a "Start here" note. `d2g demo` fills it with synthetic October nights. Mac setup guide (Homebrew, one build command). | Open the vault in Obsidian and browse the dashboard | ⬜ |
+| B-020 | **Vault + dashboard.** `d2g init-space` creates a vault: `space.md`, folders, a CSS snippet, a moments dashboard (Bases: cards by month, category, ⭐), and a "Start here" note. `d2g demo` fills it with synthetic October nights. Mac setup guide (Homebrew, one build command). | Open the vault in Obsidian and browse the dashboard | ✅ |
 | B-021 | **Typed chat → moments.** `d2g process-transcript chat.txt --by <you> --at <date time>`. Local LLM via `llama-server`, output forced to a JSON schema. Date resolver ("on Saturday" → date), extraction prompt v1, `generated_hash`. Fake-LLM tests in CI. | Write a pretend bedtime chat and see moment notes appear | ⬜ |
 | B-022 | **Voice memo → moments.** `d2g process memo.m4a`: ffmpeg → whisper.cpp → transcript, then B-021. Audio copied into the vault, so the night note plays it and each moment shows its ▶️ time range. | Drop in a phone or Mac voice memo | ⬜ |
 | B-023 | **Record on the Mac.** `d2g record`: records from the Mac mic, stops on Enter, after ~3 min of silence, or at 30 min, then processes. The auto-stop logic lives in `core`, so Android reuses it. | Talk at night next to the MacBook | ⬜ |

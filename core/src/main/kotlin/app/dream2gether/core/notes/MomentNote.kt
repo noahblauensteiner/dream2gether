@@ -17,7 +17,7 @@ object MomentNote {
     private val KNOWN = setOf(
         "type", "schema", "id", "title", "emoji", "date", "date_end", "date_confidence", "who",
         "categories", "places", "people", "first_time", "star", "private", "night", "audio_from",
-        "audio_to", "photo_hint", "generated_hash", "tags",
+        "audio_to", "photo_hint", "generated_hash", "cover", "tags",
     )
     private val PHOTO = Regex("""^!\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]$""")
     private val COMMENT_HEAD = Regex("""^>\s*\[!comment\][+-]?\s*(.*)$""", RegexOption.IGNORE_CASE)
@@ -44,6 +44,7 @@ object MomentNote {
             .string("audio_to", m.audioToMs?.let(::formatClock))
             .string("photo_hint", m.photoHint)
             .string("generated_hash", m.generatedHash)
+            .string("cover", cover(m))
             .list("tags", listOf("moment"))
         m.extras.properties.forEach { (k, v) -> fm.value(k, v) }
 
@@ -137,6 +138,11 @@ object MomentNote {
             extras = NoteExtras(properties = fm.extras(KNOWN), sections = extraSections),
         )
     }
+
+    /** Dashboard card image: the first photo, else the first category's colour. Derived, never read. */
+    private fun cover(m: Moment): String = m.photos.firstOrNull()?.let(::wrapLink)
+        ?: m.categories.firstOrNull()?.color
+        ?: Category.NO_CATEGORY_COLOR
 
     private fun String.trimQuotes(): String =
         removeSurrounding("\"").removeSurrounding("“", "”")

@@ -37,6 +37,7 @@ class MomentNoteTest {
             audio_to: "02:14"
             photo_hint:
             generated_hash: 9f2c41d0
+            cover: "[[m-2026-10-07-ramen-n9qe-1.jpg]]"
             tags:
               - moment
             ---

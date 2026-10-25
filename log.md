@@ -2,6 +2,19 @@
 
 Pilot log. Newest on top. Caveman talk. Times in UTC.
 
+## 2026-10-25 01:39 UTC · B-020 vault + dashboard ✅
+- `d2g init-space` makes vault: `space.md`, folders, Start here, `Moments.base` dashboard, `Nights.base`, CSS.
+- `d2g demo` makes fake October (Alex & Sam): 12 nights, 12 moments, 1 album. Audio = 1 sec silence.
+- Dashboard views: All moments (cards), By month, Starred ⭐, Table. Card no photo = category colour.
+- Bases syntax from Obsidian help repo. Card image keys (`image`, `imageFit`) = best guess, check on Mac.
+- 36 tests green.
+- **Try on Mac** (setup in `cli/README.md`):
+  1. `brew install openjdk@21`, set `JAVA_HOME`, clone, `./gradlew :cli:installDist`
+  2. `d2g demo ~/dream2gether-demo`
+  3. Obsidian → Open folder as vault → `~/dream2gether-demo` → Start here
+  4. Tell me: cards look nice? colours? By month ok? Audio player shows?
+- Next: B-021 typed chat → moments.
+
 ## 2026-10-25 01:21 UTC · new epic: Mac + Obsidian 🧭
 - You grill done: Mac runs full pipeline (`d2g`), Obsidian shows. Mac = M5, 24 GB.
 - Input: voice memo file, record on Mac, typed chat. All three.

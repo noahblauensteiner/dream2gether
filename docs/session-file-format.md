@@ -153,6 +153,7 @@ audio_from: "01:02"
 audio_to: "02:14"
 photo_hint:
 generated_hash: 9f2c41d0
+cover: "[[m-2026-10-07-ramen-n9qe-1.jpg]]"
 tags:
   - moment
 ---
@@ -242,8 +243,11 @@ moment text copied in, plain Markdown links, photos and voice clips in the bundl
 
 The app creates these when it sets up a new space:
 
-- `.obsidian/snippets/dream2gether.css`: warm styling for `[!comment]` callouts and moment
-  headers.
-- `collections/All moments.base`: an Obsidian Bases view (built-in database views) listing
-  moment notes as cards, filterable by month, category and star. The exact file gets worked out
-  in M0.
+- `.obsidian/snippets/dream2gether.css`: warm styling for `[!comment]` callouts and
+  ==highlights==.
+- `Moments.base`: the moments dashboard, using Obsidian Bases (built-in database views).
+  It has cards for all moments, by month and starred, plus a table view. A card shows the
+  moment's `cover`: its first photo, or its category's colour.
+- `Nights.base`: a table of all recordings.
+- `Start here.md`: a welcome note with the dashboard embedded.
+- `.obsidian/appearance.json`, written only if missing, turns the CSS snippet on.

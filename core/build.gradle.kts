@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     api(libs.kotlinx.datetime)
     testImplementation(kotlin("test"))
+    testImplementation(libs.snakeyaml)
 }
 
 tasks.test { useJUnitPlatform() }

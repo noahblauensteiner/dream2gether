@@ -2,6 +2,23 @@
 
 Pilot log. Newest on top. Caveman talk. Times in UTC.
 
+## 2026-10-25 02:04 UTC · B-021 typed chat → moments ✅
+- `d2g process-transcript chat.txt --by noah --at "…"`: local AI reads chat, writes night + moment notes.
+- AI talks to `llama-server` on Mac (127.0.0.1 only). Answer forced into JSON shape.
+  Me check shape with llama.cpp's own converter: it works.
+- AI never does date maths. It says "weekday:wednesday", code finds the date. After midnight still counts as the evening.
+- Guards: fake quotes thrown away, unknown people → "both", only real categories, glossary spelling wins.
+- Long chats cut in pieces, same moment twice = merged.
+- `generated_hash` saved, so later re-runs keep your edits (new item B-025).
+- 55 tests green.
+- **Try on Mac:**
+  1. `git pull`, `./gradlew :cli:installDist`, `brew install llama.cpp`
+  2. `d2g init-space ~/dream2gether-space --name "Noah & …" --member noah:Noah --member <id>:<Name>`
+  3. `export D2G_LLM_HF=ggml-org/gemma-3-12b-it-GGUF` (first run downloads ~7 GB)
+  4. `d2g process-transcript examples/chats/pretend-saturday.txt --space ~/dream2gether-space --by noah --at "2026-10-24 22:41"`
+  5. Look in Obsidian: dashboard shows the moments? Good titles? Dates right?
+- Next: B-022 voice memo → moments.
+
 ## 2026-10-25 01:39 UTC · B-020 vault + dashboard ✅
 - `d2g init-space` makes vault: `space.md`, folders, Start here, `Moments.base` dashboard, `Nights.base`, CSS.
 - `d2g demo` makes fake October (Alex & Sam): 12 nights, 12 moments, 1 album. Audio = 1 sec silence.

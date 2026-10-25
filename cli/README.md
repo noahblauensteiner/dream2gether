@@ -41,10 +41,37 @@ d2g init-space ~/dream2gether-space --name "Noah & …" --member noah:Noah --mem
 - `--member` is `id:Name`. The id is lowercase and goes into file names.
 - Keep the space **outside** this repo. It holds your real nights and must never be committed.
 
+## Typed chat → moments
+
+Pretend you talked, type it, and let the local model pick the moments. Nothing leaves the Mac:
+llama.cpp runs the model on the Mac's GPU, on `127.0.0.1` only.
+
+```sh
+brew install llama.cpp
+export D2G_LLM_HF=ggml-org/gemma-3-12b-it-GGUF        # ~7 GB, downloaded once; add to ~/.zshrc
+
+d2g process-transcript examples/chats/pretend-saturday.txt \
+  --space ~/dream2gether-space --by noah --at "2026-10-24 22:41"
+```
+
+- The chat file has one line per turn, `Name: text` (see `examples/chats/`).
+- `--at` says when you talked. "On Wednesday" is then resolved to the right date.
+- **Phone-sized model** (what an Android phone could run): `--hf ggml-org/gemma-3-4b-it-GGUF`.
+- **Faster repeats.** Each run loads the model again. Keep one server running instead:
+
+  ```sh
+  llama-server -hf ggml-org/gemma-3-12b-it-GGUF --port 8080      # in its own terminal
+  export D2G_LLM_URL=http://127.0.0.1:8080
+  ```
+
+- **Same time twice.** The same `--by` and `--at` is the same night, so the second run is
+  refused. Pick another time.
+
 ## Commands
 
 | Command | What it does |
 |---|---|
 | `d2g init-space DIR --name … --member id:Name …` | New empty space with the Obsidian starter kit |
 | `d2g demo DIR` | Demo space with a fictional October |
+| `d2g process-transcript FILE --by id [--at …] [--space DIR]` | Typed chat → night note + moment notes |
 | `d2g --help` | All commands and options |

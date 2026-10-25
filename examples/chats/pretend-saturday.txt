@@ -1,0 +1,8 @@
+# A pretend bedtime chat to try `d2g process-transcript`. One line per turn, `Name: text`.
+Sam: Okay. Favourite moment today?
+Noah: Easy. The pancakes this morning. You flipped one straight onto the ceiling.
+Sam: It's still up there, I think. Mine was the walk by the lake, the water was so calm.
+Noah: And the old man feeding the swans, he had names for all of them.
+Sam: Ha, Gerald the swan. Oh, and on Wednesday the call with my sister, that was really nice.
+Noah: We should go camping at the lake in spring.
+Sam: Yes! Okay, sleep now.

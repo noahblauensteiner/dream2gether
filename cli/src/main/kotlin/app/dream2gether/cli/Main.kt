@@ -74,7 +74,8 @@ class Demo : CliktCommand(name = "demo") {
     }
 }
 
-fun d2g(): CliktCommand = D2g().subcommands(InitSpace(), Demo())
+fun d2g(openModel: ModelOpener = openLlamaServer): CliktCommand =
+    D2g().subcommands(InitSpace(), Demo(), ProcessTranscript(openModel))
 
 fun main(args: Array<String>) = d2g().main(args)
 

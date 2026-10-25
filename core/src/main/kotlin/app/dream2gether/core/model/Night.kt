@@ -13,7 +13,8 @@ data class Night(
     val durationS: Int,
     val language: String,
     val question: String?,
-    val audioFile: String,
+    /** File name in the audio folder; null for typed chats. */
+    val audioFile: String?,
     val status: NightStatus,
     val processing: Processing? = null,
     val moments: List<MomentLink> = emptyList(),

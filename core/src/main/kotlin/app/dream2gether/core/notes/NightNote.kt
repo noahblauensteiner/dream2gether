@@ -51,7 +51,7 @@ object NightNote {
         body.append("# 🌙 ").append(shortDay(n.recordedAt.date)).append(" · ").append(minutes)
             .append(" min · recorded by ").append(recorderName).append("\n\n")
         n.question?.let { body.append("> *").append(it).append("*\n\n") }
-        body.append("![[").append(n.audioFile).append("]]\n")
+        n.audioFile?.let { body.append("![[").append(it).append("]]\n") }
         if (n.moments.isNotEmpty()) {
             body.append("\n## ").append(MOMENTS).append("\n\n")
             n.moments.forEach { m ->
@@ -116,7 +116,7 @@ object NightNote {
             durationS = durationS,
             language = fm.string("language") ?: "en",
             question = fm.string("question"),
-            audioFile = fm.link("audio").orEmpty(),
+            audioFile = fm.link("audio"),
             status = fm.string("status")?.let(NightStatus::fromKey) ?: NightStatus.RECORDED,
             processing = stt?.let {
                 Processing(it, fm.string("llm_model"), fm.string("prompt_version"), fm.string("processed_at"))

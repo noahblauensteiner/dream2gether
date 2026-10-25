@@ -8,7 +8,7 @@ plugins {
 kotlin { jvmToolchain(21) }
 
 dependencies {
-    implementation(libs.kotlinx.serialization.json)
+    api(libs.kotlinx.serialization.json)
     api(libs.kotlinx.datetime)
     testImplementation(kotlin("test"))
     testImplementation(libs.snakeyaml)

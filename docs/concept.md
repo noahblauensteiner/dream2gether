@@ -205,7 +205,10 @@ nights and new mixed ones can then live side by side without a migration.
 - **Privacy:** processing stays on the device, including the language model.
 - **Audio:** kept, as the core of the archive. Deleting a single night is always possible.
 - **Language:** English first.
+- **Moments:** land in the journal automatically. Edit any time.
 
 ## Still open
 
-1. **Moments: auto-accept or review first?** *(recommended: auto-accept, edit when you like)*
+1. **Desktop / laptop view.** Viewing and editing on a computer too: moving moments around,
+   highlights, comments, albums and projects. *(proposed: Obsidian on the same synced folder
+   for V1; our own desktop app later via Compose Multiplatform, not Electron)*

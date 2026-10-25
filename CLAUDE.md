@@ -15,7 +15,8 @@ Fully on-device couples' favourite-moments recorder. See `docs/`.
 
 ## Pilot workflow
 - `backlog.md` = work queue. Take top ⬜ item not blocked. Mark 🔨 while working, ✅ when done.
-- After each item: tests green, append caveman entry on top of `log.md`, commit, push.
+- After each item: tests green, add caveman entry on top of `log.md`, commit, push.
+- Every log heading has a UTC timestamp: `## YYYY-MM-DD HH:MM UTC · B-xxx title status` (`TZ=UTC date '+%Y-%m-%d %H:%M UTC'`).
 - ⏸ items wait for Noah. Skip them, don't fake them.
 - Never commit real recordings or space folders. Synthetic test data only.
 
